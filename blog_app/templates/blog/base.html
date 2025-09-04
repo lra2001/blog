@@ -37,23 +37,34 @@
                     </div>
                     <!-- Navbar Right Side -->
                     <div class="navbar-nav">
-                        <a class="nav-item nav-link" href="#">Login</a>
-                        <a class="nav-item nav-link" href="#">Register</a>
+                        {% if user.is_authenticated %}
+                        <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
+                        <form method="post" action="{% url 'logout' %}" class="nav-item nav-link">
+                            {% csrf_token %}
+                            <button type="submit" class="nav-item nav-link btn btn-link"
+                                style="padding: 0; border: none; background: none; color: inherit; cursor: pointer;">
+                                Logout
+                            </button>
+                        </form>
+                        {% else %}
+                        <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+                        <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
+                        {% endif %}
                     </div>
                 </div>
             </div>
         </nav>
     </header>
     <main role="main" class="container">
-          <div class="row">
+        <div class="row">
             <div class="col-md-8">
-              {% if messages %}
+                {% if messages %}
                 {% for message in messages %}
-                  <div class="alert alert-{{ message.tags }}">
+                <div class="alert alert-{{ message.tags }}">
                     {{ message }}
-                  </div>
+                </div>
                 {% endfor %}
-              {% endif %}
+                {% endif %}
                 {% block content %}{% endblock %}
             </div>
             <div class="col-md-4">
